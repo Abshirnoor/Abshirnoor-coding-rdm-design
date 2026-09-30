@@ -1,5 +1,11 @@
+/* Default design; script.js swaps these values for a random design on every visit */
 :root {
-  --dark: #242423;
+  --bg: #C0D7D8;
+  --ink: #242423;
+  --accent: #E07A5F;
+  --font-display: "Cinzel", serif;
+  --font-body: "Noto Sans", sans-serif;
+  --img-rotate: 0deg;
 }
 
 html {
@@ -15,13 +21,14 @@ html, body {
 }
 
 body {
-  background-color: white;
-  font-family: "Noto Sans", sans-serif;
-  font-size: 14px;
-  color: var(--dark);
-  line-height: 1.3;
+  background-color: var(--bg);
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--ink);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .logo,
@@ -29,7 +36,7 @@ h1,
 h2 {
   margin: 0;
   line-height: 1;
-  font-family: "Cinzel", serif;
+  font-family: var(--font-display);
   font-weight: 400;
 }
 
@@ -39,11 +46,9 @@ p {
 
 .stage {
   position: relative;
-  background: white;
-  visibility: show;
 }
 
-/*  ========================================================================== 
+/*  ==========================================================================
     Nav Header
     ========================================================================== */
 .header {
@@ -55,8 +60,9 @@ p {
 }
 @media all and (max-width: 768px) {
   .header {
-    display: block;
-    left: 24px;
+    left: 16px;
+    right: 16px;
+    justify-content: space-between;
   }
 }
 
@@ -74,73 +80,141 @@ p {
 .nav-btn {
   display: block;
   margin: -2px 0 0 56px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
 }
 @media all and (max-width: 768px) {
   .nav-btn {
-    margin: 18px 0 0 -6px;
+    margin: 0;
   }
+}
+
+.nav-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
 }
 
 .nav-btn__svg {
   pointer-events: none;
+  fill: currentColor;
 }
 
-/*  ========================================================================== 
+/*  ==========================================================================
     Intro
     ========================================================================== */
-    .intro,
-    .footer {
-      height: 100vh;
-    }
-    
-    .intro {
-      position: relative;
-      padding: 5vw;
-      background: #C0D7D8;
-      overflow: hidden;
-    }
-    
-    .intro__content {
-      position: absolute;
-      right: 8%;
-      bottom: 15%;
-      z-index: 3;
-    }
-    @media all and (max-width: 768px) {
-      .intro__content {
-        right: auto;
-      }
-    }
-    
-    .intro__title {
-      font-size: 25vw;
-      overflow: hidden;
-      letter-spacing: -2.3vw;
-      padding-right: 2.3vw;
-    }
-    .intro__txt {
-      padding-left: 20px;
-    }
-    @media all and (max-width: 768px) {
-      .intro__title {
-        margin-bottom: 5vh;
-      }
-    }
-    
-    .intro__img {
-      position: absolute;
-      width: 35%;
-      max-width: 390px;
-      height: auto;
-    }
-    @media all and (max-width: 768px) {
-      .intro__img {
-        width: 75vw;
-      }
-    }
-    
-    .intro__img--1 {
-      z-index: 2;
-      left: 10%;
-      bottom: 35%;
-    }
+.intro {
+  position: relative;
+  min-height: 100vh;
+  padding: 5vw;
+  overflow: hidden;
+}
+
+.intro__content {
+  position: absolute;
+  right: 8%;
+  bottom: 12%;
+  z-index: 3;
+  max-width: 560px;
+}
+
+.intro__title {
+  font-size: 25vw;
+  overflow: hidden;
+  letter-spacing: -2.3vw;
+  padding-right: 2.3vw;
+  color: var(--ink);
+}
+
+.intro__txt {
+  padding-left: 20px;
+  border-left: 3px solid var(--accent);
+}
+
+.intro__meta {
+  margin-top: 16px;
+  padding-left: 20px;
+  font-size: 13px;
+  opacity: 0.75;
+}
+
+.design-name {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+kbd {
+  padding: 1px 6px;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.intro__img {
+  position: absolute;
+  z-index: 2;
+  width: 35%;
+  max-width: 390px;
+  height: auto;
+  box-shadow: 16px 16px 0 var(--accent);
+  transform: rotate(var(--img-rotate));
+}
+
+/* Layout A: photo left, text bottom right (the original design) */
+.layout-a .intro__img     { left: 10%; bottom: 35%; }
+
+/* Layout B: photo right, text bottom left */
+.layout-b .intro__img     { right: 8%; top: 12%; }
+.layout-b .intro__content { right: auto; left: 6%; }
+
+/* Layout C: photo centred at the top, text below */
+.layout-c .intro__img     { left: 50%; top: 8%; width: min(20%, 32vh); transform: translateX(-50%) rotate(var(--img-rotate)); }
+.layout-c .intro__content { right: 50%; bottom: 6%; transform: translateX(50%); text-align: center; }
+.layout-c .intro__title   { font-size: 14vw; letter-spacing: -1vw; padding-right: 1vw; }
+.layout-c .intro__txt     { border-left: 0; padding-left: 0; }
+.layout-c .intro__meta    { padding-left: 0; }
+
+/* Phones: stack everything in normal flow so nothing overlaps */
+@media all and (max-width: 768px) {
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 110px 16px 48px;
+  }
+
+  .intro .intro__img,
+  .intro .intro__content {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    transform: none;
+    text-align: left;
+  }
+
+  .intro .intro__img {
+    width: 75vw;
+    max-width: 320px;
+    transform: rotate(var(--img-rotate));
+  }
+
+  .intro__title {
+    margin-bottom: 24px;
+    font-size: 30vw;
+  }
+
+  .layout-c .intro__txt,
+  .layout-c .intro__meta {
+    border-left: 3px solid var(--accent);
+    padding-left: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
+}
